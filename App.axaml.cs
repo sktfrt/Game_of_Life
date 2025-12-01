@@ -15,7 +15,8 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow();
+            var terrain = new Terrain(50, 50);
+            desktop.MainWindow = new LifeForm(terrain);
         }
 
         base.OnFrameworkInitializationCompleted();

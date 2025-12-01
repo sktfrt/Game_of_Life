@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -37,8 +38,13 @@ public class GameField
         for (int x = 0; x < Width; x++)
             for (int y = 0; y < Height; y++)
             {
-                _field[x, y] = rand.NextDouble() < aliveProbability ?
+                if (x == 0 || x == Height + 1 || y == 0 || y == Width + 1)
+                    _field[x, y] = CellState.Dead;
+                else
+                {
+                    _field[x, y] = rand.NextDouble() < aliveProbability ?
                             CellState.Alive : CellState.Dead;
+                }
             }
     }
 }
@@ -52,6 +58,8 @@ public class DrawField : Control
 
         if (Field == null) return;
 
+        context.FillRectangle(Brushes.LightSteelBlue, new Rect(0, 0, Bounds.Width, Bounds.Height));
+
         double cellWidth = Bounds.Width / Field.Width;
         double cellHeight = Bounds.Height / Field.Height;
         double cellSize = Math.Min(cellHeight, cellWidth);
@@ -64,7 +72,7 @@ public class DrawField : Control
                 var rect = new Rect(x * cellSize, y * cellSize, cellSize, cellSize);
 
                 context.FillRectangle(brush, rect, (float)cellSize / 2);
-                context.DrawRectangle(null, new Pen(Brushes.Beige, 0.5), rect, cellSize / 2, cellSize / 2);
+                context.DrawRectangle(null, new Pen(Brushes.DarkOliveGreen, 1.7), rect, cellSize / 2, cellSize / 2);
             }
     }
 }
